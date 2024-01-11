@@ -8,3 +8,5 @@ class GameEvent extends Equatable {
 }
 
 class OnNextQuestion extends GameEvent {}
+
+class OnRestartGame extends GameEvent {}
