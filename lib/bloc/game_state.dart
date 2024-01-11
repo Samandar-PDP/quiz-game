@@ -7,6 +7,9 @@ abstract class GameState extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class InitialState extends GameState {}
+
 class Loading extends GameState {}
 
 class Success extends GameState {

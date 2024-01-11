@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quiz_game/bloc/game_bloc.dart';
+import 'package:quiz_game/bloc/game_event.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,7 +34,8 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.network("https://www.thesafaricollection.com/wp-content/uploads/2022/07/The-Safari-Collection-Hey-You-Giraffe-Manor-1.jpg",width: MediaQuery.of(context).size.width / 2,fit: BoxFit.cover,),
+                child: Image.network("https://www.thesafaricollection.com/wp-content/uploads/2022/07/The-Safari-Collection-Hey-You-Giraffe-Manor-1.jpg",
+                  width: MediaQuery.of(context).size.width - 100,fit: BoxFit.cover,),
               ),
             ),
             Expanded(
@@ -53,7 +57,10 @@ class _HomePageState extends State<HomePage> {
                       ElevatedButton(onPressed: () {}, child: Text("Giraffe",style: TextStyle(color: Colors.black),)),
                     ],
                   ),
-                  ElevatedButton(onPressed: () {}, child: Text("NEXT"))
+                  ElevatedButton(onPressed: () {
+                    /// tezro qo'chqar
+                    BlocProvider.of<GameBloc>(context).add(OnNextQuestion());
+                  }, child: Text("NEXT"))
                 ],
               ),
             )
