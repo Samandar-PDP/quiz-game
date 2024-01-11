@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_game/bloc/game_bloc.dart';
 import 'package:quiz_game/bloc/game_event.dart';
 import 'package:quiz_game/bloc/game_state.dart';
+import 'package:quiz_game/model/question.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    BlocProvider.of<GameBloc>(context).add(OnNextQuestion());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,23 +38,21 @@ class _HomePageState extends State<HomePage> {
         ),
         child: BlocConsumer<GameBloc, GameState>(
           listener: (context, state) {
-            if(state is GameFinished) {
-
-            } else if(state is Success) {
-              print(state.currentQuestion.correctAnswer);
-            }
+            if(state is GameFinished) {}
           },
           builder: (context, state) {
-            if(state is Loading) {
-              return const Center(child: CircularProgressIndicator());
+            if(state is Success) {
+              return _buildBody(state.currentQuestion);
             }
-            return _buildBody();
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.white),
+            );
           },
         )
       ),
     );
   }
-  Widget _buildBody() {
+  Widget _buildBody(Question question) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -54,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.network("https://www.thesafaricollection.com/wp-content/uploads/2022/07/The-Safari-Collection-Hey-You-Giraffe-Manor-1.jpg",
+            child: Image.network(question.image,
               width: MediaQuery.of(context).size.width - 100,fit: BoxFit.cover,),
           ),
         ),
@@ -66,15 +72,15 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(onPressed: () {}, child: Text("Bear",style: TextStyle(color: Colors.black),)),
-                  ElevatedButton(onPressed: () {}, child: Text("Lion",style: TextStyle(color: Colors.black),)),
+                  ElevatedButton(onPressed: () {}, child: Text(question.options[0],style: TextStyle(color: Colors.black),)),
+                  ElevatedButton(onPressed: () {}, child: Text(question.options[1],style: TextStyle(color: Colors.black),)),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(onPressed: () {}, child: Text("Dragon",style: TextStyle(color: Colors.black),)),
-                  ElevatedButton(onPressed: () {}, child: Text("Giraffe",style: TextStyle(color: Colors.black),)),
+                  ElevatedButton(onPressed: () {}, child: Text(question.options[2],style: TextStyle(color: Colors.black),)),
+                  ElevatedButton(onPressed: () {}, child: Text(question.options[3],style: TextStyle(color: Colors.black),)),
                 ],
               ),
               ElevatedButton(onPressed: () {

@@ -12,7 +12,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     on<GameEvent>((event, emit) async {
       if(event is OnNextQuestion) {
         emit(Loading());
-        await Future.delayed(const Duration(milliseconds: 100));
+        await Future.delayed(const Duration(milliseconds: 300));
         _manager.nextQuestion();
         emit(Success(questionList[_manager.currentQuestionIndex], 0));
       }
